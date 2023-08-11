@@ -1,10 +1,9 @@
-
+import 'package:chatter/pages/frame/message/index.dart';
+import 'package:chatter/pages/frame/sign_in/index.dart';
 import 'package:chatter/pages/frame/welcome/index.dart';
 import 'package:flutter/material.dart';
 import 'package:chatter/common/middlewares/middlewares.dart';
-
 import 'package:get/get.dart';
-
 import 'routes.dart';
 
 class AppPages {
@@ -20,16 +19,22 @@ class AppPages {
       page: () => WelcomePage(),
       binding: WelcomeBinding(),
     ),
+    GetPage(
+      name: AppRoutes.Message,
+      page: () => MessagePage(),
+      binding: MessageBinding(),
+      middlewares: [
+      RouteAuthMiddleware(priority: 1)
+      ],
+    ),
 
-    /*
     GetPage(
       name: AppRoutes.SIGN_IN,
       page: () => SignInPage(),
       binding: SignInBinding(),
     ),
-    GetPage(name: AppRoutes.Message, page: () => MessagePage(), binding: MessageBinding(),middlewares: [
-            RouteAuthMiddleware(priority: 1),],)
-  */
+
+
     /*
 
     // GetPage(

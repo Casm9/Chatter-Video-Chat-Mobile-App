@@ -1,3 +1,4 @@
+import 'package:chatter/common/routes/names.dart';
 import 'package:chatter/pages/frame/welcome/state.dart';
 import 'package:get/get.dart';
 
@@ -9,6 +10,9 @@ class WelcomeController extends GetxController{
   @override
   void onReady(){
     super.onReady();
+    Future.delayed(
+        Duration(seconds: 3),()=>Get.offAllNamed(AppRoutes.Message)
+    );
   }
 
 }
