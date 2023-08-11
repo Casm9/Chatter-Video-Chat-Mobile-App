@@ -38,7 +38,7 @@ class MessagePage extends GetView<MessageController> {
                   Text("hi"),
                 ),
                 onTap: (){
-                  controller.goProfile;
+                  controller.goProfile();
                 },
               ),
               Positioned(

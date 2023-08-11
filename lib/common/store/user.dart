@@ -53,13 +53,16 @@ class UserStore extends GetxController {
     setToken(profile.access_token!);
   }
 
-  // 注销
+
   Future<void> onLogout() async {
    // if (_isLogin.value) await UserAPI.logout();
+    /*
     await StorageService.to.remove(STORAGE_USER_TOKEN_KEY);
     await StorageService.to.remove(STORAGE_USER_PROFILE_KEY);
     _isLogin.value = false;
     token = '';
+
+     */
     Get.offAllNamed(AppRoutes.SIGN_IN);
   }
 }
