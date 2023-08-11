@@ -1,6 +1,7 @@
 import 'package:chatter/pages/frame/message/index.dart';
 import 'package:chatter/pages/frame/sign_in/index.dart';
 import 'package:chatter/pages/frame/welcome/index.dart';
+import 'package:chatter/pages/profile/index.dart';
 import 'package:flutter/material.dart';
 import 'package:chatter/common/middlewares/middlewares.dart';
 import 'package:get/get.dart';
@@ -35,6 +36,12 @@ class AppPages {
       binding: SignInBinding(),
     ),
 
+    GetPage(
+        name: AppRoutes.Profile,
+        page: () => ProfilePage(),
+        binding: ProfileBinding()
+    ),
+
 
     /*
 
@@ -57,8 +64,7 @@ class AppPages {
     GetPage(name: AppRoutes.Contact, page: () => ContactPage(), binding: ContactBinding()),
 
 
-    //我的
-    GetPage(name: AppRoutes.Profile, page: () => ProfilePage(), binding: ProfileBinding()),
+
     //聊天详情
     GetPage(name: AppRoutes.Chat, page: () => ChatPage(), binding: ChatBinding()),
 
