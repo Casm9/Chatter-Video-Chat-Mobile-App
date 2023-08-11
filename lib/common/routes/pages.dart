@@ -1,4 +1,5 @@
 
+import 'package:chatter/pages/frame/welcome/index.dart';
 import 'package:flutter/material.dart';
 import 'package:chatter/common/middlewares/middlewares.dart';
 
@@ -13,12 +14,14 @@ class AppPages {
 
   static final List<GetPage> routes = [
 
-    /*
+
     GetPage(
       name: AppRoutes.INITIAL,
       page: () => WelcomePage(),
       binding: WelcomeBinding(),
     ),
+
+    /*
     GetPage(
       name: AppRoutes.SIGN_IN,
       page: () => SignInPage(),
@@ -26,7 +29,7 @@ class AppPages {
     ),
     GetPage(name: AppRoutes.Message, page: () => MessagePage(), binding: MessageBinding(),middlewares: [
             RouteAuthMiddleware(priority: 1),],)
- */
+  */
     /*
 
     // GetPage(
