@@ -19,6 +19,7 @@ class AppPages {
       page: () => WelcomePage(),
       binding: WelcomeBinding(),
     ),
+
     GetPage(
       name: AppRoutes.Message,
       page: () => MessagePage(),
