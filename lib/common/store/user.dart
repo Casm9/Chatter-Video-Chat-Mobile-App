@@ -8,16 +8,17 @@ import 'package:get/get.dart';
 class UserStore extends GetxController {
   static UserStore get to => Get.find();
 
-  // 是否登录
+  // login
   final _isLogin = false.obs;
-  // 令牌 token
+  // token
   String token = '';
-  // 用户 profile
+  // profile
   final _profile = UserItem().obs;
 
   bool get isLogin => _isLogin.value;
   UserItem get profile => _profile.value;
   bool get hasToken => token.isNotEmpty;
+  //set setIsLogin(login) => _isLogin.value = login;
 
   @override
   void onInit() {
@@ -30,13 +31,13 @@ class UserStore extends GetxController {
     }
   }
 
-  // 保存 token
+  //  storage token
   Future<void> setToken(String value) async {
     await StorageService.to.setString(STORAGE_USER_TOKEN_KEY, value);
     token = value;
   }
 
-  // 获取 profile
+  // get profile
   Future<String> getProfile() async {
     if (token.isEmpty) return "";
     // var result = await UserAPI.profile();
@@ -45,7 +46,7 @@ class UserStore extends GetxController {
    return StorageService.to.getString(STORAGE_USER_PROFILE_KEY);
   }
 
-  // 保存 profile
+  // save profile
   Future<void> saveProfile(UserItem profile) async {
     _isLogin.value = true;
     StorageService.to.setString(STORAGE_USER_PROFILE_KEY, jsonEncode(profile));
@@ -56,13 +57,13 @@ class UserStore extends GetxController {
 
   Future<void> onLogout() async {
    // if (_isLogin.value) await UserAPI.logout();
-    /*
+
+    //comment if there is no backend
     await StorageService.to.remove(STORAGE_USER_TOKEN_KEY);
     await StorageService.to.remove(STORAGE_USER_PROFILE_KEY);
     _isLogin.value = false;
     token = '';
 
-     */
     Get.offAllNamed(AppRoutes.SIGN_IN);
   }
 }

@@ -1,3 +1,5 @@
+import 'package:chatter/pages/contact/index.dart';
+import 'package:chatter/pages/frame/message/chat/index.dart';
 import 'package:chatter/pages/frame/message/index.dart';
 import 'package:chatter/pages/frame/sign_in/index.dart';
 import 'package:chatter/pages/frame/welcome/index.dart';
@@ -42,6 +44,17 @@ class AppPages {
         binding: ProfileBinding()
     ),
 
+    GetPage(
+        name: AppRoutes.Contact,
+        page: () => ContactPage(),
+        binding: ContactBinding()
+    ),
+
+    GetPage(
+        name: AppRoutes.Chat,
+        page: () => ChatPage(),
+        binding: ChatBinding()
+    ),
 
     /*
 
@@ -54,19 +67,17 @@ class AppPages {
     //   ],
     // ),
 
-    // 最新路由
+    //
     GetPage(name: AppRoutes.EmailLogin, page: () => EmailLoginPage(), binding: EmailLoginBinding()),
     GetPage(name: AppRoutes.Register, page: () => RegisterPage(), binding: RegisterBinding()),
     GetPage(name: AppRoutes.Forgot, page: () => ForgotPage(), binding: ForgotBinding()),
     GetPage(name: AppRoutes.Phone, page: () => PhonePage(), binding: PhoneBinding()),
     GetPage(name: AppRoutes.SendCode, page: () => SendCodePage(), binding: SendCodeBinding()),
-    // 首页
-    GetPage(name: AppRoutes.Contact, page: () => ContactPage(), binding: ContactBinding()),
+    //
 
 
 
-    //聊天详情
-    GetPage(name: AppRoutes.Chat, page: () => ChatPage(), binding: ChatBinding()),
+    //
 
     GetPage(name: AppRoutes.Photoimgview, page: () => PhotoImgViewPage(), binding: PhotoImgViewBinding()),
     GetPage(name: AppRoutes.VoiceCall, page: () => VoiceCallViewPage(), binding: VoiceCallViewBinding()),

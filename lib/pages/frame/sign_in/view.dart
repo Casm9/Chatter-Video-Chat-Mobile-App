@@ -50,7 +50,7 @@ class SignInPage extends GetView<SignInController> {
             ),
             Container(
               child: Text(
-                "Sign in with Google",
+                "Sign in with ${loginType}",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: AppColors.primaryText,
