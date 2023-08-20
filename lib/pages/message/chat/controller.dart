@@ -1,4 +1,5 @@
-import 'package:chatter/pages/frame/message/chat/index.dart';
+import 'package:chatter/common/routes/routes.dart';
+import 'package:chatter/pages/message/chat/index.dart';
 import 'package:get/get.dart';
 
 class ChatController extends GetxController{
@@ -8,6 +9,20 @@ class ChatController extends GetxController{
 
   void goMore(){
     state.more_status.value = state.more_status.value?false:true;
+  }
+
+  void audioCall(){
+    state.more_status.value = false;
+    Get.toNamed(AppRoutes.VoiceCall,
+      parameters: {
+        "to_token":state.to_token.value,
+        "to_name": state.to_name.value,
+        "to_avatar": state.to_avatar.value,
+        "call_role": "anchor",
+        "doc_id":doc_id
+
+      }
+    );
   }
 
   @override

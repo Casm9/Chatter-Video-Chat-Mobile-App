@@ -27,68 +27,71 @@ class ContactList extends GetView<ContactController> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: 44.w,
-              height: 44.w,
-              decoration: BoxDecoration(
-                color: AppColors.primarySecondaryBackground,
-                borderRadius: BorderRadius.all(Radius.circular(22.r)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
-                    spreadRadius: 1,
-                    blurRadius: 2,
-                    offset: Offset(0,1)
-                  )
-                ]
-              ),
-              child: CachedNetworkImage(
-                imageUrl: item.avatar!,
-                height: 44.h,
+                Container(
                 width: 44.w,
-                imageBuilder: (context,imageProvider)=>Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(22.r)),
-                    image: DecorationImage(
-                      image: imageProvider
-                    )
+                height: 44.w,
+                decoration: BoxDecoration(
+                  color: AppColors.primarySecondaryBackground,
+                  borderRadius: BorderRadius.all(Radius.circular(22.r)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.1),
+                      spreadRadius: 1,
+                      blurRadius: 2,
+                      offset: Offset(0,1)
+                      )
+                    ]
+                  ),
+                child: CachedNetworkImage(
+                    imageUrl: item.avatar!,
+                    height: 50.h,
+                    width: 50.w,
+                    imageBuilder: (context,imageProvider)=>Container(
+                      decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(22.r)),
+                      image: DecorationImage(
+                              image: imageProvider
+                            )
+                          ),
+                        ),
+                    errorWidget: (context,url,error)=>Image(
+                      image: AssetImage('assets/icons/empty_person_avatar.png')
+                      ),
                   ),
                 ),
-              ),
-            ),
-            Container(
-              width: 275.w,
-              padding: EdgeInsets.only(top: 10.h,left: 10.w,right: 0.w,bottom: 0.h),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: 200.w,
-                    height: 42.h,
-                    child: Text(
-                      "${item.name}",
-                      overflow: TextOverflow.clip,
-                      maxLines: 1,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.thirdElement,
-                        fontSize: 16.sp,
-                        fontFamily: "Avenir"
+                Container(
+                width: 275.w,
+                padding: EdgeInsets.only(top: 10.h,left: 10.w,right: 0.w,bottom: 0.h),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 200.w,
+                      height: 42.h,
+                      child: Text(
+                        "${item.name}",
+                        overflow: TextOverflow.clip,
+                        maxLines: 1,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.thirdElement,
+                          fontSize: 16.sp,
+                          fontFamily: "Avenir"
+                        ),
                       ),
                     ),
-                  ),
-                  Container(
-                    width: 12.w,
-                    height: 12.h,
-                    margin: EdgeInsets.only(top: 5.h),
-                    child: Image.asset(
-                      "assets/icons/ang.png"
-                    ),
-                  )
-                ],
-              ),
-            )
+                    Container(
+                      width: 12.w,
+                      height: 12.h,
+                      margin: EdgeInsets.only(top: 5.h),
+                      child: Image.asset(
+                        "assets/icons/ang.png"
+                      ),
+                    )
+                  ],
+                ),
+              )
           ],
         ),
       ),
@@ -97,9 +100,7 @@ class ContactList extends GetView<ContactController> {
 
   @override
   Widget build(BuildContext context) {
-    /*return Obx(() {
-
-     */
+    return Obx(() {
       return CustomScrollView(
         slivers: [
           SliverPadding(
@@ -111,7 +112,6 @@ class ContactList extends GetView<ContactController> {
                     print(item.name);
                     return _buildListItem(item);
 
-
                   },
                   childCount: controller.state.contactList.length
               ),
@@ -120,7 +120,7 @@ class ContactList extends GetView<ContactController> {
           )
         ],
       );
-   // });
+   });
 
   }
 }

@@ -1,8 +1,9 @@
 import 'package:chatter/pages/contact/index.dart';
-import 'package:chatter/pages/frame/message/chat/index.dart';
-import 'package:chatter/pages/frame/message/index.dart';
+import 'package:chatter/pages/message/chat/index.dart';
+import 'package:chatter/pages/message/index.dart';
 import 'package:chatter/pages/frame/sign_in/index.dart';
 import 'package:chatter/pages/frame/welcome/index.dart';
+import 'package:chatter/pages/message/voicecall/index.dart';
 import 'package:chatter/pages/profile/index.dart';
 import 'package:flutter/material.dart';
 import 'package:chatter/common/middlewares/middlewares.dart';
@@ -56,6 +57,12 @@ class AppPages {
         binding: ChatBinding()
     ),
 
+    GetPage(
+        name: AppRoutes.VoiceCall,
+        page: () => VoiceCallPage(),
+        binding: VoiceCallBinding()
+    ),
+
     /*
 
     // GetPage(
@@ -80,7 +87,7 @@ class AppPages {
     //
 
     GetPage(name: AppRoutes.Photoimgview, page: () => PhotoImgViewPage(), binding: PhotoImgViewBinding()),
-    GetPage(name: AppRoutes.VoiceCall, page: () => VoiceCallViewPage(), binding: VoiceCallViewBinding()),
+
     GetPage(name: AppRoutes.VideoCall, page: () => VideoCallPage(), binding: VideoCallBinding()),*/
   ];
 

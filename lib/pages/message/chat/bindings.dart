@@ -1,4 +1,4 @@
-import 'package:chatter/pages/frame/message/chat/index.dart';
+import 'package:chatter/pages/message/chat/index.dart';
 import 'package:get/get.dart';
 
 class ChatBinding implements Bindings{

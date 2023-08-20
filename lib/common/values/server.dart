@@ -1,4 +1,6 @@
-const SERVER_API_URL = 'http://10.0.2.2:8000/';
-const APPID = "e11666dd3c4346568b67b80823bcca50";
+const SERVER_API_URL = 'http://192.168.2.110:8001/';
+//http://10.0.2.2:8000/ local server
+//http://192.168.2.110:8001/  my internet ip address
+const APPID = "f28458206e87438bac1ca464e9f5ff31";
 
 

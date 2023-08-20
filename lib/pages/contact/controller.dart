@@ -66,7 +66,7 @@ class ContactController extends GetxController{
             toFirestore: (Msg msg,options) => msg.toFirestore()
         ).add(msgData);
 
-        Get.offAllNamed("/chat",
+        Get.toNamed("/chat",
           parameters: {
             "doc_id":doc_id.id,
             "to_token":contactItem.token??"",
@@ -77,12 +77,12 @@ class ContactController extends GetxController{
           }
         );
 
-      //print("creating new document and adding user info done");
+      print("creating new document and adding user info done");
 
     }else{
-      //print("users are chatting first time");
+      print("users are chatting first time");
 
-      if(from_messages.docs.first.id.isNotEmpty){
+      if(from_messages.docs.isNotEmpty){
         Get.toNamed("/chat",
             parameters: {
               "doc_id":from_messages.docs.first.id,
@@ -93,7 +93,7 @@ class ContactController extends GetxController{
             }
         );
       }
-      if(to_messages.docs.first.id.isNotEmpty){
+      if(to_messages.docs.isNotEmpty){
         Get.toNamed("/chat",
             parameters: {
               "doc_id":to_messages.docs.first.id,

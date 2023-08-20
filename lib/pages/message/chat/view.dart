@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chatter/common/values/values.dart';
 import 'package:flutter/material.dart';
-import 'package:chatter/pages/frame/message/chat/index.dart';
+import 'package:chatter/pages/message/chat/index.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
@@ -263,7 +263,7 @@ class ChatPage extends GetView<ChatController> {
                         ),
                       ),
                       onTap: (){
-
+                          controller.audioCall();
                       },
                     ),
                     GestureDetector(
