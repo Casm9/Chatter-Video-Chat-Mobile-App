@@ -1,16 +1,23 @@
-# chatter
+# Chatter
 
 Video Chat App
 
-## Getting Started
+# App Functional Features
 
-This project is a starting point for a Flutter application.
+- Third party and phone number login (Third party login would involve Google, Facebook and Apple login)
+- Profile page
+- Text chat, image chat, audio and video call chat
+- Sending notification (text, audio and video chat)
+- Notification on receive (text message, audio and video call)
+- Sound on initiating audio and video call
+- Save chat history
 
-A few resources to get you started if this is your first Flutter project:
+# App Technical Details
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Flutter framework : it has been used for building beautiful UI for both iOS and Android.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Firebase service : it has been used for sending users registration and phone number login. 
+also for sending notification.
+
+- Agora SDK : it has been used for using video and audio call service.
+it provides very stable API for audio and video call. 

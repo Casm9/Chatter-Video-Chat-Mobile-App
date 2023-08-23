@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chatter/common/values/values.dart';
+import 'package:chatter/pages/message/chat/widgets/chat_list.dart';
 import 'package:flutter/material.dart';
 import 'package:chatter/pages/message/chat/index.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -79,6 +80,7 @@ class ChatPage extends GetView<ChatController> {
       body: Obx( () => SafeArea(
         child: Stack(
           children: [
+            ChatList(),
             Positioned(
                 bottom: 0.h,
                 child: Container(
@@ -100,6 +102,7 @@ class ChatPage extends GetView<ChatController> {
                               Container(
                                 width: 220.w,
                                 child: TextField(
+                                  controller: controller.myInputController,
                                   keyboardType: TextInputType.multiline,
                                   autofocus: false,
                                   decoration: InputDecoration(
@@ -143,7 +146,7 @@ class ChatPage extends GetView<ChatController> {
                                   child: Image.asset("assets/icons/send.png"),
                                 ),
                                 onTap: (){
-
+                                    controller.sendMessage();
                                 },
                               )
                             ],
@@ -236,7 +239,7 @@ class ChatPage extends GetView<ChatController> {
                         ),
                       ),
                       onTap: (){
-
+                        controller.imgFromGallery();
                       },
                     ),
                     GestureDetector(

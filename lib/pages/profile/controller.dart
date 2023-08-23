@@ -7,6 +7,15 @@ class ProfileController extends GetxController{
   ProfileController();
   final state = ProfileState();
 
+  @override
+  void onInit(){
+    super.onInit();
+    var userItem = Get.arguments;
+    if(userItem != null){
+      state.profile_detail.value = userItem;
+    }
+  }
+
  Future<void> goLogout() async{
     await GoogleSignIn().signOut();
     await UserStore.to.onLogout();

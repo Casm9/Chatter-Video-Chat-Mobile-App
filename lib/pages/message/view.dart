@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chatter/common/routes/names.dart';
 import 'package:chatter/common/values/values.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +37,25 @@ class MessagePage extends GetView<MessageController> {
                   ),
                   child: controller.state.head_detail.value.avatar==null?
                   Image(image: AssetImage("assets/images/account_header.png")):
-                  Text("hi"),
+                  CachedNetworkImage(
+                      imageUrl: controller.state.head_detail.value.avatar!,
+                      height: 44.h,
+                      width: 44.w,
+                      imageBuilder: (context,imageProvider) => Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(22.r)),
+                          image: DecorationImage(
+                            image: imageProvider,
+                            fit: BoxFit.fill
+                          )
+                        ),
+                      ),
+                    errorWidget: (context,url,error) => Image(
+                        image: AssetImage(
+                          'assets/images/account_header.png'
+                        )
+                    ),
+                  ),
                 ),
                 onTap: (){
                   controller.goProfile();
@@ -71,50 +90,50 @@ class MessagePage extends GetView<MessageController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
+        body: Obx(() => SafeArea(
           child: Stack(
             children: [
-                CustomScrollView(
-                  slivers: [
-                      SliverAppBar(
-                        pinned: true,
-                        title: _headBar(),
+              CustomScrollView(
+                slivers: [
+                  SliverAppBar(
+                    pinned: true,
+                    title: _headBar(),
 
-                      )
-                  ],
-                ),
-                Positioned(
-                    right: 20.w,
-                    bottom: 150.h,
-                    height: 55.h,
-                    width: 55.w,
-                    child: GestureDetector(
-                      child: Container(
-                        height: 50.h,
-                        width: 50.w,
-                        padding: EdgeInsets.all(10.w),
-                        decoration: BoxDecoration(
-                          color: AppColors.primaryElement,
-                          borderRadius: BorderRadius.all(Radius.circular(40.r)),
-                          boxShadow: [
-                            BoxShadow(
+                  )
+                ],
+              ),
+              Positioned(
+                right: 20.w,
+                bottom: 70.h,
+                height: 50.h,
+                width: 50.w,
+                child: GestureDetector(
+                  child: Container(
+                    height: 50.h,
+                    width: 50.w,
+                    padding: EdgeInsets.all(10.w),
+                    decoration: BoxDecoration(
+                        color: AppColors.primaryElement,
+                        borderRadius: BorderRadius.all(Radius.circular(40.r)),
+                        boxShadow: [
+                          BoxShadow(
                               color: Colors.grey.withOpacity(0.2),
                               spreadRadius: 2,
                               blurRadius: 2,
                               offset: Offset(1,1)
-                            )
-                          ]
-                        ),
-                        child: Image.asset("assets/icons/contact.png"),
-                      ),
-                      onTap: (){
-                        Get.toNamed(AppRoutes.Contact);
-                      },
+                          )
+                        ]
                     ),
+                    child: Image.asset("assets/icons/contact.png"),
+                  ),
+                  onTap: (){
+                    Get.toNamed(AppRoutes.Contact);
+                  },
                 ),
+              ),
             ],
           ),
-        ),
+        ))
     );
   }
 }
