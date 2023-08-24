@@ -2,14 +2,14 @@ import 'package:chatter/common/routes/routes.dart';
 import 'package:chatter/common/style/style.dart';
 import 'package:chatter/common/utils/FirebaseMessagingHandler.dart';
 import 'package:chatter/global.dart';
-import 'package:chatter/pages/contact/index.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
 
 
 Future<void> main() async{
@@ -47,6 +47,11 @@ class MyApp extends StatelessWidget {
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
       builder: EasyLoading.init(),
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate
+      ],
         ));
   }
 }

@@ -9,7 +9,7 @@ String timeFormated(String? time){
   return formatter.format(now);
 }
 
-/// 格式化时间
+
 String duTimeLineFormat(DateTime dt) {
 
   var now = DateTime.now();
@@ -23,7 +23,7 @@ String duTimeLineFormat(DateTime dt) {
   if (difference.inMinutes < 60) {
     return "${difference.inMinutes}m ago";
   }
-  // 1天内
+
   if (difference.inHours < 12) {
     return "${difference.inHours}h ago";
   }
@@ -31,17 +31,17 @@ String duTimeLineFormat(DateTime dt) {
     final dtFormat = new DateFormat('MM-dd hh:mm',Platform.localeName);
     return dtFormat.format(dt);
   }
-  // 30天内
+
   if (difference.inDays < 30) {
     final dtFormat = new DateFormat('yy-MM-dd hh:mm',Platform.localeName);
     return dtFormat.format(dt);
   }
-  // MM-dd
+
   else if (difference.inDays < 365) {
     final dtFormat = new DateFormat('yy-MM-dd',Platform.localeName);
     return dtFormat.format(dt);
   }
-  // yyyy-MM-dd
+
   else {
     final dtFormat = new DateFormat('yyyy-MM-dd',Platform.localeName);
     var str = dtFormat.format(dt);

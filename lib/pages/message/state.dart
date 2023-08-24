@@ -3,4 +3,6 @@ import 'package:get/get.dart';
 
 class MessageState{
   var head_detail = UserItem().obs;
+  RxBool tapStatus = true.obs;
+  RxList<Message> msgList = <Message>[].obs;
 }

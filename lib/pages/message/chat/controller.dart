@@ -53,7 +53,31 @@ class ChatController extends GetxController{
     state.to_name.value = data['to_name']??"";
     state.to_avatar.value = data['to_avatar']??"";
     state.to_online.value = data['to_online']??"1";
+    clearMsgNum(doc_id);
+  }
 
+  Future<void> clearMsgNum(String doc_id) async {
+
+    var messageResult = await db.collection("message").doc(doc_id).withConverter(
+        fromFirestore: Msg.fromFirestore,
+        toFirestore: (Msg msg, options) => msg.toFirestore()
+    ).get();
+
+    //to know if we have any unread messages
+    if(messageResult.data() != null) {
+      var item = messageResult.data()!;
+      int to_msg_num = item.to_msg_num == null ? 0 : item.to_msg_num!;
+      int from_msg_num = item.from_msg_num == null ? 0 : item.from_msg_num!;
+      if (item.from_token == token) {
+        to_msg_num = 0;
+      } else {
+        from_msg_num = 0;
+      }
+      await db.collection("message").doc(doc_id).update({
+        "to_msg_num": to_msg_num,
+        "from_msg_num": from_msg_num,
+      });
+    }
   }
 
   @override
@@ -83,7 +107,6 @@ class ChatController extends GetxController{
               case DocumentChangeType.removed:
                 break;
             }
-
       }
 
       tempMsgList.reversed.forEach((element) {
@@ -113,8 +136,6 @@ class ChatController extends GetxController{
       }
 
     });
-
-
 
   }
 
@@ -185,7 +206,6 @@ class ChatController extends GetxController{
 
 
   }
-
 
   Future<void> asyncLoadMoreData() async {
     final messages  = await db.collection("message")
@@ -275,8 +295,7 @@ class ChatController extends GetxController{
     listener.cancel();
     myInputController.dispose();
     myScrollController.dispose();
+    clearMsgNum(doc_id);
   }
-
-
 
 }

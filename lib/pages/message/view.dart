@@ -1,6 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:chatter/common/entities/entities.dart';
 import 'package:chatter/common/routes/names.dart';
+import 'package:chatter/common/utils/utils.dart';
 import 'package:chatter/common/values/values.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:chatter/pages/message/controller.dart';
@@ -9,7 +12,7 @@ import 'package:get/get.dart';
 class MessagePage extends GetView<MessageController> {
   const MessagePage({Key? key}) : super(key: key);
 
- Widget _headBar(){
+  Widget _headBar(){
   return Center(
     child: Container(
       width: 320.w,
@@ -87,6 +90,236 @@ class MessagePage extends GetView<MessageController> {
   );
  }
 
+  Widget _headTabs(){
+   return Container(
+     height: 48.h,
+     width: 320.w,
+     decoration: BoxDecoration(
+         color: AppColors.primarySecondaryBackground,
+         borderRadius: BorderRadius.all(Radius.circular(5.r))
+     ),
+     padding: EdgeInsets.all(4.h),
+     child: Row(
+       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+       children: [
+         GestureDetector(
+           onTap: (){
+             controller.goTabStatus();
+           },
+           child: Container(
+             width: 150.w,
+             height: 40.h,
+             decoration: controller.state.tapStatus.value ? BoxDecoration(
+                 color: AppColors.primaryBackground,
+                 borderRadius: BorderRadius.all(Radius.circular(5.r)),
+                 boxShadow: [
+                   BoxShadow(
+                       color: Colors.grey.withOpacity(0.1),
+                       spreadRadius: 2,
+                       blurRadius: 3,
+                       offset: Offset(0,2)
+                   )
+                 ]
+             ) : BoxDecoration(),
+             child: Row(
+               mainAxisAlignment: MainAxisAlignment.center,
+               children: [
+                 Text(
+                   "Chat",
+                   style: TextStyle(
+                       color: AppColors.primaryThreeElementText,
+                       fontWeight: FontWeight.normal,
+                       fontSize: 14.sp
+                   ),
+                 ),
+               ],
+             ),
+           ),
+         ),
+         GestureDetector(
+           onTap: (){
+             controller.goTabStatus();
+           },
+           child: Container(
+             width: 150.w,
+             height: 40.h,
+             decoration: controller.state.tapStatus.value ? BoxDecoration():BoxDecoration(
+                 color: AppColors.primaryBackground,
+                 borderRadius: BorderRadius.all(Radius.circular(5.r)),
+                 boxShadow: [
+                   BoxShadow(
+                       color: Colors.grey.withOpacity(0.1),
+                       spreadRadius: 2,
+                       blurRadius: 3,
+                       offset: Offset(0,2)
+                   )
+                 ]
+             ),
+             child: Row(
+               mainAxisAlignment: MainAxisAlignment.center,
+               children: [
+                 Text(
+                   "Call",
+                   style: TextStyle(
+                       color: AppColors.primaryThreeElementText,
+                       fontWeight: FontWeight.normal,
+                       fontSize: 14.sp
+                   ),
+                 ),
+               ],
+             ),
+           ),
+         )
+       ],
+     ),
+   );
+
+ }
+
+  Widget _chatListItem(Message item){
+   return Container(
+     padding: EdgeInsets.only(top:10.h,left: 0.w,right: 0.w,bottom: 10.h),
+     child: InkWell(
+       onTap: (){
+        if(item.doc_id!=null){
+          Get.toNamed("/chat",
+          parameters: {
+            "doc_id" : item.doc_id!,
+            "to_token" : item.token!,
+            "to_name" : item.name!,
+            "to_avatar" : item.avatar!,
+            "to_online" : item.online.toString()
+          }
+          );
+        }
+       },
+       child: Row(
+         children: [
+           Container(
+             width: 44.w,
+             height: 44.h,
+             margin: EdgeInsets.only(top: 0.h,left: 0.w,right: 10.w),
+             decoration: BoxDecoration(
+                 color: AppColors.primarySecondaryBackground,
+                 borderRadius: BorderRadius.all(Radius.circular(22.r)),
+                 boxShadow: [
+                   BoxShadow(
+                       color: Colors.grey.withOpacity(0.1),
+                       spreadRadius: 1,
+                       blurRadius: 2,
+                       offset: Offset(0,1)
+                   )
+                 ]
+             ),
+             child: item.avatar==null?
+             Image(image: AssetImage("assets/images/account_header.png")):
+             CachedNetworkImage(
+               imageUrl: item.avatar!,
+               height: 44.h,
+               width: 44.w,
+               imageBuilder: (context,imageProvider) => Container(
+                 decoration: BoxDecoration(
+                     borderRadius: BorderRadius.all(Radius.circular(22.r)),
+                     image: DecorationImage(
+                         image: imageProvider,
+                         fit: BoxFit.fill
+                     )
+                 ),
+               ),
+               errorWidget: (context,url,error) => Image(
+                   image: AssetImage(
+                       'assets/images/account_header.png'
+                   )
+               ),
+             ),
+
+
+           ),
+           Container(
+             child: Row(
+               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+               crossAxisAlignment: CrossAxisAlignment.center,
+               children: [
+                 SizedBox(
+                   width: 175.w,
+                   height: 44.w,
+                   child: Column(
+                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                     crossAxisAlignment: CrossAxisAlignment.start,
+                     children: [
+                       Text("${item.name}",
+                         overflow: TextOverflow.clip,
+                         maxLines: 1,
+                         softWrap: false,
+                         style: TextStyle(
+                           fontFamily: "Avenir",
+                           fontWeight: FontWeight.bold,
+                           color: AppColors.thirdElement,
+                           fontSize: 14.sp
+                         ),
+                       ),
+                       Text("${item.last_msg}",
+                           overflow: TextOverflow.clip,
+                           maxLines: 1,
+                           softWrap: false,
+                           style: TextStyle(
+                               fontFamily: "Avenir",
+                               fontWeight: FontWeight.normal,
+                               color: AppColors.primarySecondaryElementText,
+                               fontSize: 12.sp
+                           )
+                       )
+                     ],
+                   ),
+                 ),
+                 SizedBox(
+                   width: 86.w,
+                   height: 44.h,
+                   child: Column(
+                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                     crossAxisAlignment: CrossAxisAlignment.end,
+                     children: [
+                       Text(
+                           item.last_time==null ? "" : duTimeLineFormat(
+                               (item.last_time as Timestamp).toDate()),
+                         maxLines: 1,
+                         softWrap: false,
+                         style: TextStyle(
+                             fontFamily: "Avenir",
+                             fontWeight: FontWeight.normal,
+                             color: AppColors.primaryElementText,
+                             fontSize: 11.sp
+                         ),
+                       ),
+                       item.msg_num == 0 ? Container() : Container(
+                         decoration: BoxDecoration(
+                           color: Colors.red,
+                           borderRadius: BorderRadius.all(Radius.circular(10.r)),
+                         ),
+                         padding: EdgeInsets.only(left: 4.w,right: 4.w),
+                         child: Text("${item.msg_num}",
+                           maxLines: 1,
+                           softWrap: false,
+                           style: TextStyle(
+                               fontFamily: "Avenir",
+                               fontWeight: FontWeight.normal,
+                               color: AppColors.primaryElementText,
+                               fontSize: 11.sp
+                           ),
+                         ),
+                       )
+                     ],
+                   ),
+                 )
+               ],
+             ),
+           )
+         ],
+       ),
+     ),
+   );
+ }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,7 +331,26 @@ class MessagePage extends GetView<MessageController> {
                   SliverAppBar(
                     pinned: true,
                     title: _headBar(),
-
+                  ),
+                  SliverPadding(
+                    padding: EdgeInsets.symmetric(vertical: 0.h,horizontal: 20.w),
+                    sliver: SliverToBoxAdapter(
+                      child: _headTabs(),
+                    ),
+                  ),
+                  SliverPadding(
+                      padding: EdgeInsets.symmetric(vertical: 0.h,horizontal: 20.w),
+                      sliver: controller.state.tapStatus.value ?  SliverList(
+                          delegate:  SliverChildBuilderDelegate(
+                             (context,index){
+                                var item = controller.state.msgList[index];
+                                return _chatListItem(item);
+                             },
+                            childCount: controller.state.msgList.length
+                          ),
+                  ) : SliverToBoxAdapter(
+                        child: Container()
+                      )
                   )
                 ],
               ),
@@ -136,4 +388,5 @@ class MessagePage extends GetView<MessageController> {
         ))
     );
   }
+
 }
