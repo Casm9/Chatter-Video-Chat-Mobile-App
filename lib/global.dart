@@ -10,6 +10,7 @@ class Global{
     WidgetsFlutterBinding.ensureInitialized();
     await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
     await Get.putAsync<StorageService>(() => StorageService().init());
+    Get.put<ConfigStore>(ConfigStore());
     Get.put<UserStore>(UserStore());
   }
 }

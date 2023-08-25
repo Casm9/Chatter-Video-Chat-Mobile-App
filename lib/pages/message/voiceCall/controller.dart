@@ -1,5 +1,5 @@
+import 'dart:async';
 import 'dart:convert';
-
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:chatter/common/apis/apis.dart';
 import 'package:chatter/common/entities/chat.dart';
@@ -22,6 +22,12 @@ class VoiceCallController extends GetxController{
   final db = FirebaseFirestore.instance;
   final profile_token = UserStore.to.profile.token;
   late final RtcEngine engine;
+  int call_s = 0;
+  int call_m = 0;
+  int call_h = 0;
+  late final Timer callTimer;
+  ChannelProfileType channelProfileType = ChannelProfileType.channelProfileCommunication;
+
 
   @override
   void onInit(){
@@ -37,7 +43,7 @@ class VoiceCallController extends GetxController{
   }
 
   Future<void> initEngine() async{
-    await player.setAsset("assets/Sound_Horizon.mp3");
+    await player.setAsset("assets/call_sound.mp3");
 
     engine = createAgoraRtcEngine();
     await engine.initialize(RtcEngineContext(
@@ -54,6 +60,7 @@ class VoiceCallController extends GetxController{
       },
       onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) async {
         await player.pause();
+        callTime();
       },
       onLeaveChannel: (RtcConnection connection, RtcStats stats){
         print('...user left the room...');
@@ -78,6 +85,32 @@ class VoiceCallController extends GetxController{
       await player.play();
     }
 
+  }
+
+  void callTime(){
+    callTimer = Timer.periodic(Duration(seconds: 1), (timer) {
+      call_s = call_s + 1;
+      if(call_s >= 60){
+        call_s = 0;
+        call_m = call_m + 1;
+      }
+      if(call_m >=60){
+        call_m = 0;
+        call_h = call_h + 1;
+      }
+
+      var h = call_h < 10 ? "0$call_h" : "$call_h"; // for example 01:20:59
+      var m = call_m < 10 ? "0$call_m" : "$call_m";
+      var s = call_m < 10 ? "0$call_s" : "$call_s";
+      if(call_h ==0){
+        state.callTime.value = "$m:$s";
+        state.callTimeNum.value = "$call_m m and $call_s s";
+      }else{
+        state.callTime.value = "$h:$m:$s";
+        state.callTimeNum.value = "$call_h h $call_m m and $call_s s";
+      }
+
+    });
   }
 
   Future<void> sendNotification(String call_type) async{
@@ -141,7 +174,7 @@ class VoiceCallController extends GetxController{
         channelId: state.channelId.value,
         uid: 0,
         options: ChannelMediaOptions(
-          channelProfile: ChannelProfileType.channelProfileCommunication,
+          channelProfile: channelProfileType,
           clientRoleType: ClientRoleType.clientRoleBroadcaster
         )
 
@@ -159,6 +192,7 @@ class VoiceCallController extends GetxController{
     );
 
     await player.pause();
+    await sendNotification("cancel");
     state.isJoined.value = false;
     EasyLoading.dismiss();
     Get.back();
@@ -179,11 +213,6 @@ class VoiceCallController extends GetxController{
   }
 
 
-  @override
-  void dispose(){
-    _dispose();
-    super.dispose();
-  }
 
 
 

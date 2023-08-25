@@ -15,7 +15,7 @@ class ConfigStore extends GetxController {
   Locale locale = Locale('en', 'US');
   List<Locale> languages = [
     Locale('en', 'US'),
-    Locale('zh', 'CN'),
+    Locale('tr', 'TR'),
   ];
 
 
@@ -29,7 +29,7 @@ class ConfigStore extends GetxController {
     _platform = await PackageInfo.fromPlatform();
   }
 
-  // 标记用户已打开APP
+  // mark the user has opened the app
   Future<bool> saveAlreadyOpen() {
     return StorageService.to.setBool(STORAGE_DEVICE_FIRST_OPEN_KEY, true);
   }

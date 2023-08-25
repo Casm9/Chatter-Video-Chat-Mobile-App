@@ -291,7 +291,7 @@ class ChatPage extends GetView<ChatController> {
                         ),
                       ),
                       onTap: (){
-
+                          controller.videoCall();
                       },
                     )
                   ],

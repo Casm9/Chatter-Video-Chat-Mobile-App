@@ -3,6 +3,7 @@ import 'package:chatter/pages/message/chat/index.dart';
 import 'package:chatter/pages/message/index.dart';
 import 'package:chatter/pages/frame/sign_in/index.dart';
 import 'package:chatter/pages/frame/welcome/index.dart';
+import 'package:chatter/pages/message/videoCall/index.dart';
 import 'package:chatter/pages/message/voicecall/index.dart';
 import 'package:chatter/pages/profile/index.dart';
 import 'package:flutter/material.dart';
@@ -63,6 +64,12 @@ class AppPages {
         binding: VoiceCallBinding()
     ),
 
+    GetPage(
+        name: AppRoutes.VideoCall,
+        page: () => VideoCallPage(),
+        binding: VideoCallBinding()
+    ),
+
     /*
 
     // GetPage(
@@ -88,7 +95,7 @@ class AppPages {
 
     GetPage(name: AppRoutes.Photoimgview, page: () => PhotoImgViewPage(), binding: PhotoImgViewBinding()),
 
-    GetPage(name: AppRoutes.VideoCall, page: () => VideoCallPage(), binding: VideoCallBinding()),*/
+    */
   ];
 
 

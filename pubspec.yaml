@@ -133,7 +133,7 @@ flutter:
     - assets/
     - assets/images/
     - assets/icons/
-    - assets/Sound_Horizon.mp3
+    - assets/call_sound.mp3
     - assets/audio_mixing/Agora.io-Interactions.mp3
     - assets/agora-logo.png
     - assets/dang.mp3
