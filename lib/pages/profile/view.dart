@@ -1,186 +1,16 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:chatter/common/values/values.dart';
 import 'package:chatter/pages/profile/index.dart';
+import 'package:chatter/pages/profile/widgets/profile_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class ProfilePage extends GetView<ProfileController> {
   const ProfilePage({Key? key}) : super(key: key);
 
-
-  AppBar _buildAppbar(){
-    return AppBar(
-      title: Text(
-        "Profile",
-        style: TextStyle(
-          color: AppColors.primaryText,
-          fontSize: 16.sp,
-          fontWeight: FontWeight.normal,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildProfilePhoto(){
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        Container(
-          width: 100.w,
-          height: 110.h,
-          decoration: BoxDecoration(
-            color: AppColors.primarySecondaryBackground,
-            borderRadius: BorderRadius.all(Radius.circular(60.r)),
-            boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.1),
-                  spreadRadius: 1,
-                  blurRadius: 2,
-                  offset: Offset(0,1),
-                )
-            ]
-          ),
-          child: controller.state.profile_detail.value.avatar != null ? CachedNetworkImage(
-            imageUrl: controller.state.profile_detail.value.avatar!,
-            height: 120.h,
-            width: 120.w,
-            imageBuilder: (context,imageProvider) => Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(60.r)),
-                  image: DecorationImage(
-                      image: imageProvider,
-                      fit: BoxFit.fill
-                  )
-              ),
-            ),
-            errorWidget: (context,url,error) => Image(
-                image: AssetImage(
-                    'assets/images/account_header.png'
-                )
-            ),
-          ) :Image(
-            width: 120.w,
-            height: 120.h,
-            fit: BoxFit.cover,
-            image: AssetImage(
-                "assets/images/account_header.png"
-            ),
-
-          ),
-        ),
-        Positioned(
-            bottom: 0.w,
-            right: 0.w,
-            height: 35.h,
-            child: GestureDetector(
-              child: Container(
-                height: 35.h,
-                width: 35.w,
-                padding: EdgeInsets.all(7.w),
-                decoration: BoxDecoration(
-                  color: AppColors.primaryElement,
-                  borderRadius: BorderRadius.all(Radius.circular(40.r))
-                ),
-                child: Image.asset("assets/icons/edit.png"),
-              ),
-            )
-        )
-      ],
-    );
-  }
-
-  Widget _buildCompleteBtn(){
-    return GestureDetector(
-      child: Container(
-          width: 295.w,
-          height: 44.h,
-          margin: EdgeInsets.only(top:60.h,bottom: 30.h),
-          decoration: BoxDecoration(
-            color: AppColors.primaryElement,
-            borderRadius: BorderRadius.all(Radius.circular(5.r)),
-            boxShadow: [
-              BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
-              spreadRadius: 1,
-              blurRadius: 2,
-              offset: Offset(0,1),
-            )
-          ]
-      ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Complete",
-              style: TextStyle(
-                color: AppColors.primaryElementText,
-                fontSize: 14.sp,
-                fontWeight: FontWeight.normal,
-              ),
-            ),
-          ],
-        ),
-
-      ),
-    );
-  }
-
-  Widget _buildLogoutBtn(){
-    return GestureDetector(
-      child: Container(
-        width: 295.w,
-        height: 44.h,
-        margin: EdgeInsets.only(top:0.h,bottom: 30.h),
-        decoration: BoxDecoration(
-            color: AppColors.primarySecondaryElementText,
-            borderRadius: BorderRadius.all(Radius.circular(5.r)),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.1),
-                spreadRadius: 1,
-                blurRadius: 2,
-                offset: Offset(0,1),
-              )
-            ]
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Logout",
-              style: TextStyle(
-                color: AppColors.primaryElementText,
-                fontSize: 14.sp,
-                fontWeight: FontWeight.normal,
-              ),
-            ),
-          ],
-        ),
-
-      ),
-      onTap: (){
-        Get.defaultDialog(
-            title: "Are you sure to log out?",
-            content: Container(),
-            onConfirm: (){
-              controller.goLogout();
-            },
-            onCancel: (){},
-            textConfirm: "Confirm",
-            textCancel: "Cancel",
-            confirmTextColor: Colors.white
-        );
-      },
-    );
-  }
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _buildAppbar(),
-      body: SafeArea(
+      appBar: buildAppbar(),
+      body: Obx(()=> SafeArea(
         child: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
@@ -189,16 +19,22 @@ class ProfilePage extends GetView<ProfileController> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    _buildProfilePhoto(),
-                    _buildCompleteBtn(),
-                    _buildLogoutBtn(),
+                    buildProfilePhoto(controller,context),
+                    buildName(controller, (value) {
+                      controller.state.profile_detail.value.name = value;
+                    }, controller.state.profile_detail.value.name ?? ""),
+                    buildDescription(controller, (value) {
+                      controller.state.profile_detail.value.description = value;
+                    }, controller.state.profile_detail.value.description ?? "Enter a description"),
+                    buildCompleteBtn(controller),
+                    buildLogoutBtn(controller),
                   ],
                 ),
               ),
             )
           ],
         ),
-      ),
+      )),
     );
   }
 }

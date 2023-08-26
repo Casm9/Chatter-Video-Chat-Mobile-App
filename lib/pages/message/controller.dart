@@ -22,6 +22,8 @@ class MessageController extends GetxController{
         arguments: state.head_detail.value
     );
 
+    getProfile();
+
   }
 
   goTabStatus(){
@@ -34,7 +36,7 @@ class MessageController extends GetxController{
     if(state.tapStatus.value) {
       asyncLoadMsgData();
     } else{
-
+      asyncLoadCallData();
     }
 
     EasyLoading.dismiss();
@@ -61,6 +63,17 @@ class MessageController extends GetxController{
     if(to_messages.docs.isNotEmpty){
       await addMessage(to_messages.docs);
     }
+
+    state.msgList.value.sort((a, b) {
+      if (b.last_time == null) {
+        return 0;
+      }
+      if (a.last_time == null) {
+        return 0;
+      }
+      return b.last_time!.compareTo(a.last_time!);
+    });
+
   }
 
   addMessage(List<QueryDocumentSnapshot<Msg>> data){
@@ -140,6 +153,67 @@ class MessageController extends GetxController{
      bindFcmTokenRequestEntity.fcmtoken = fcmToken;
      await ChatAPI.bind_fcmtoken(params: bindFcmTokenRequestEntity);
     }
+  }
+
+  Future<void> asyncLoadCallData() async {
+    state.callList.clear();
+    var token = UserStore.to.profile.token;
+
+    var from_chatcall = await db.collection("chatcall").withConverter(
+        fromFirestore: ChatCall.fromFirestore,
+        toFirestore: (ChatCall chatCall,options) => chatCall.toFirestore()
+    ).where("from_token",isEqualTo : token).limit(30).get();
+
+    var to_chatcall = await db.collection("chatcall").withConverter(
+        fromFirestore: ChatCall.fromFirestore,
+        toFirestore: (ChatCall chatCall,options) => chatCall.toFirestore()
+    ).where("to_token",isEqualTo : token).limit(30).get();
+
+
+    if(from_chatcall.docs.isNotEmpty){
+      await addChatCall(from_chatcall.docs);
+    }
+
+    if(to_chatcall.docs.isNotEmpty){
+      await addChatCall(to_chatcall.docs);
+    }
+
+    //sort
+    state.callList.value.sort((a, b) {
+      if (b.last_time == null) {
+        return 0;
+      }
+      if (a.last_time == null) {
+        return 0;
+      }
+      return b.last_time!.compareTo(a.last_time!);
+    });
+
+  }
+
+  addChatCall(List<QueryDocumentSnapshot<ChatCall>> data){
+    data.forEach((element) {
+      var item = element.data();
+      //saves the common properties
+      CallMessage callMessage = CallMessage();
+      callMessage.doc_id = element.id;
+      callMessage.last_time = item.last_time;
+      callMessage.call_time = item.call_time;
+
+      if(item.from_token == token){
+        callMessage.name = item.to_name;
+        callMessage.avatar = item.to_avatar;
+        callMessage.token  = item.to_token;
+
+      }else{
+        callMessage.name = item.from_name;
+        callMessage.avatar = item.from_avatar;
+        callMessage.token  = item.from_token;
+
+      }
+      state.callList.add(callMessage);
+
+    });
   }
 
 

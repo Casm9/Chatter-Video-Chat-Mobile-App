@@ -241,7 +241,7 @@ class VideoCallController extends GetxController {
         addtime: Timestamp.now());
 
     await db
-        .collection("messsage")
+        .collection("message")
         .doc(state.doc_id.value)
         .collection("msglist")
         .withConverter(
@@ -251,7 +251,7 @@ class VideoCallController extends GetxController {
         .add(content);
 
     var messageRes = await db
-        .collection("messsage")
+        .collection("message")
         .doc(state.doc_id.value)
         .withConverter(
         fromFirestore: Msg.fromFirestore,

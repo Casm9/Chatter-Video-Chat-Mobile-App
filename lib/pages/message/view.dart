@@ -282,8 +282,9 @@ class MessagePage extends GetView<MessageController> {
                        Text(
                            item.last_time==null ? "" : duTimeLineFormat(
                                (item.last_time as Timestamp).toDate()),
+                         textAlign: TextAlign.end,
                          maxLines: 1,
-                         softWrap: false,
+                         overflow: TextOverflow.fade,
                          style: TextStyle(
                              fontFamily: "Avenir",
                              fontWeight: FontWeight.normal,
@@ -320,6 +321,142 @@ class MessagePage extends GetView<MessageController> {
    );
  }
 
+  Widget _callListItem(CallMessage item){
+    return Container(
+      padding: EdgeInsets.only(top:10.h,left: 0.w,right: 0.w,bottom: 10.h),
+      decoration: const BoxDecoration(
+          border: Border(
+              bottom: BorderSide(
+                  width: 1, color: AppColors.primarySecondaryBackground))),
+      child: InkWell(
+        onTap: (){},
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 44.w,
+              height: 44.h,
+              margin: EdgeInsets.only(top: 0.h,left: 0.w,right: 10.w),
+              decoration: BoxDecoration(
+                  color: AppColors.primarySecondaryBackground,
+                  borderRadius: BorderRadius.all(Radius.circular(22.r)),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.grey.withOpacity(0.1),
+                        spreadRadius: 1,
+                        blurRadius: 2,
+                        offset: const Offset(0,1)
+                    )
+                  ]
+              ),
+              child: item.avatar==null?
+              Image(image: AssetImage("assets/images/account_header.png"))
+              :CachedNetworkImage(
+                imageUrl: item.avatar!,
+                height: 44.h,
+                width: 44.w,
+                imageBuilder: (context,imageProvider) => Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(22.r)),
+                      image: DecorationImage(
+                          image: imageProvider,
+                          fit: BoxFit.fill
+                      )
+                  ),
+                ),
+                errorWidget: (context,url,error) => Image(
+                    image: AssetImage(
+                        'assets/images/account_header.png'
+                    )
+                ),
+              ),
+
+
+            ),
+            Container(
+              padding: EdgeInsets.only(top: 0.w, left: 0.w, right: 0.w, bottom: 0.w),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 175.w,
+                    height: 44.w,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("${item.name}",
+                          overflow: TextOverflow.clip,
+                          maxLines: 1,
+                          softWrap: false,
+                          style: TextStyle(
+                              fontFamily: "Avenir",
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.thirdElement,
+                              fontSize: 14.sp
+                          ),
+                        ),
+                        Text("${item.call_time}",
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            softWrap: false,
+                            style: TextStyle(
+                                fontFamily: "Avenir",
+                                fontWeight: FontWeight.normal,
+                                color: AppColors.primarySecondaryElementText,
+                                fontSize: 12.sp
+                            )
+                        )
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    width: 86.w,
+                    height: 44.h,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          item.last_time==null ? "" : duTimeLineFormat(
+                              (item.last_time as Timestamp).toDate()),
+                          textAlign: TextAlign.end,
+                          overflow: TextOverflow.fade,
+                          maxLines: 1,
+                          style: TextStyle(
+                              fontFamily: "Avenir",
+                              fontWeight: FontWeight.normal,
+                              color: AppColors.primaryElementText,
+                              fontSize: 11.sp
+                          ),
+                        ),
+                        Text(
+                          item.type == null ? "" : "${item.type}",
+                          textAlign: TextAlign.end,
+                          overflow: TextOverflow.fade,
+                          maxLines: 1,
+                          style: TextStyle(
+                            fontFamily: 'Avenir',
+                            fontWeight: FontWeight.normal,
+                            color: AppColors.thirdElementText,
+                            fontSize: 12.sp,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -348,9 +485,15 @@ class MessagePage extends GetView<MessageController> {
                              },
                             childCount: controller.state.msgList.length
                           ),
-                  ) : SliverToBoxAdapter(
-                        child: Container()
-                      )
+                  ) : SliverList(
+                        delegate:  SliverChildBuilderDelegate(
+                                (context,index){
+                              var item = controller.state.callList[index];
+                              return _callListItem(item);
+                            },
+                            childCount: controller.state.callList.length
+                        ),
+                    )
                   )
                 ],
               ),

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:chatter/common/apis/apis.dart';
 import 'package:chatter/common/entities/chat.dart';
+import 'package:chatter/common/entities/chatcall.dart';
 import 'package:chatter/common/store/store.dart';
 import 'package:chatter/common/values/values.dart';
 import 'package:chatter/pages/message/voicecall/index.dart';
@@ -198,9 +199,31 @@ class VoiceCallController extends GetxController{
     Get.back();
   }
 
+  Future<void> addCallTime() async{
+    var profile = UserStore.to.profile;
+    var metaData = ChatCall(
+      from_token: profile.token,
+      to_token: state.to_token.value,
+      from_name: profile.name,
+      to_name: state.to_name.value,
+      from_avatar: profile.avatar,
+      to_avatar: state.to_avatar.value,
+      call_time: "${state.callTime.value}",
+      type: "voice",
+      last_time: Timestamp.now()
+    );
+
+    await db.collection("chatcall").withConverter(
+        fromFirestore: ChatCall.fromFirestore,
+        toFirestore: (ChatCall chatCall, options) => chatCall.toFirestore()
+    ).add(metaData);
+
+  }
+
   Future<void> _dispose() async {
     await player.pause();
     await engine.leaveChannel();
+    await addCallTime();
     await engine.release();
     await player.stop();
   }
@@ -211,6 +234,8 @@ class VoiceCallController extends GetxController{
     _dispose();
     super.onClose();
   }
+
+
 
 
 
