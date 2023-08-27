@@ -14,7 +14,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 Future<void> main() async{
   await Global.init();
-  runApp(MyApp());
+  runApp(const MyApp());
   firebaseChatInit().whenComplete(() => FirebaseMessagingHandler.config());
 }
 

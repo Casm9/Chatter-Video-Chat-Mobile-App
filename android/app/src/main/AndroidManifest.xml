@@ -3,6 +3,7 @@
 
     <uses-feature
         android:name="android.hardware.camera"
+        android:usesCleartextTraffic="true"
         android:required="false" />
 
     <uses-permission android:name="android.permission.INTERNET"/>

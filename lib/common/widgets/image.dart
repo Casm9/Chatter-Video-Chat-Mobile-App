@@ -9,8 +9,10 @@ Widget netImageCached(
   double height = 48,
   EdgeInsetsGeometry? margin,
 }) {
-  return CachedNetworkImage(
+  return url==null ? Image(
+    image: AssetImage('assets/images/feature-1.png')):CachedNetworkImage(
     imageUrl: url,
+      httpHeaders: const {"Connection": "keep-alive"},
     imageBuilder: (context, imageProvider) => Container(
       height: height.h,
       width: width.w,
@@ -24,8 +26,6 @@ Widget netImageCached(
         ),
       ),
     ),
-    errorWidget: (context, url, error) => Image(
-      image: AssetImage('assets/images/feature-1.png'),
-    ),
+
   );
 }

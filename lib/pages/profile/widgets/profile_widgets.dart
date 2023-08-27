@@ -4,6 +4,7 @@ import 'package:chatter/pages/profile/controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 
 AppBar buildAppbar() {
   return AppBar(
@@ -17,8 +18,22 @@ AppBar buildAppbar() {
     ),
   );
 }
+Future<void> fetchImageWithTimeout(String imageUrl) async {
+  try {
+    final response = await http.get(Uri.parse(imageUrl)).timeout(const Duration(seconds: 30));
+    if (response.statusCode != 200) {
+      throw Exception('Image request failed with status code: ${response.statusCode}');
+    }
+  } catch (e) {
+    throw Exception('Image request failed: $e');
+  }
+
+
+}
 
 Widget buildProfilePhoto(ProfileController controller, BuildContext context) {
+  String originalImageUrl = controller.state.profile_detail.value.avatar!;
+  String updatedImageUrl = originalImageUrl.replaceFirst("http://localhost/", SERVER_API_URL);
   return Stack(
     alignment: Alignment.center,
     children: [
@@ -36,26 +51,28 @@ Widget buildProfilePhoto(ProfileController controller, BuildContext context) {
                 offset: Offset(0, 1),
               )
             ]),
-        child: controller.state.profile_detail.value.avatar != null
-            ? CachedNetworkImage(
-                imageUrl: controller.state.profile_detail.value.avatar!,
-                height: 120.h,
-                width: 120.w,
-                imageBuilder: (context, imageProvider) => Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(60.r)),
-                      image: DecorationImage(
-                          image: imageProvider, fit: BoxFit.fill)),
-                ),
-                errorWidget: (context, url, error) => Image(
-                    image: AssetImage('assets/images/account_header.png')),
-              )
-            : Image(
-                width: 120.w,
-                height: 120.h,
-                fit: BoxFit.cover,
-                image: AssetImage("assets/images/account_header.png"),
-              ),
+        child: FutureBuilder(
+          future: fetchImageWithTimeout(updatedImageUrl),
+          builder: (context,snapshot){
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else {
+              return CachedNetworkImage(
+                  imageUrl: updatedImageUrl,
+                  httpHeaders: const {"Connection": "keep-alive"},
+                  height: 120.h,
+                  width: 120.w,
+                  imageBuilder: (context, imageProvider) => Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(60.r)),
+                        image: DecorationImage(
+                            image: imageProvider, fit: BoxFit.fill)),
+                  )
+              );
+
+            }
+          },
+        )
       ),
       Positioned(
           bottom: 0.w,

@@ -10,6 +10,8 @@ class ContactList extends GetView<ContactController> {
   const ContactList({Key? key}) : super(key: key);
 
   Widget _buildListItem(ContactItem item){
+    String originalImageUrl = item.avatar!;
+    String updatedImageUrl = originalImageUrl.replaceFirst("http://localhost/", SERVER_API_URL);
     return Container(
       padding: EdgeInsets.only(top: 10.h),
       decoration: BoxDecoration(
@@ -42,8 +44,10 @@ class ContactList extends GetView<ContactController> {
                       )
                     ]
                   ),
-                child: CachedNetworkImage(
-                    imageUrl: item.avatar!,
+                child: item.avatar==null ? Image(image: AssetImage("assets/images/account_header.png"))
+                    : CachedNetworkImage(
+                    imageUrl: updatedImageUrl,
+                    httpHeaders: const {"Connection": "keep-alive"},
                     height: 50.h,
                     width: 50.w,
                     imageBuilder: (context,imageProvider)=>Container(
@@ -54,9 +58,7 @@ class ContactList extends GetView<ContactController> {
                             )
                           ),
                         ),
-                    errorWidget: (context,url,error)=>Image(
-                      image: AssetImage('assets/icons/empty_person_avatar.png')
-                      ),
+
                   ),
                 ),
                 Container(

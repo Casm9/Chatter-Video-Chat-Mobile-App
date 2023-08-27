@@ -1,5 +1,4 @@
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chatter/common/values/values.dart';
 import 'package:chatter/pages/message/videoCall/index.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +11,8 @@ class VideoCallPage extends GetView<VideoCallController> {
 
   @override
   Widget build(BuildContext context) {
+    String originalImageUrl = controller.state.to_avatar.value;
+    String updatedImageUrl = originalImageUrl.replaceFirst("http://localhost/", SERVER_API_URL);
     return Scaffold(
        backgroundColor: AppColors.primary_bg,
        body: SafeArea(
@@ -124,7 +125,7 @@ class VideoCallPage extends GetView<VideoCallController> {
                             borderRadius: BorderRadius.circular(10.r),
                             color: AppColors.primaryElementText
                           ),
-                          child: Image.network(controller.state.to_avatar.value,
+                          child: Image.network(updatedImageUrl,
                             fit: BoxFit.fill,
                           ),
                         ),

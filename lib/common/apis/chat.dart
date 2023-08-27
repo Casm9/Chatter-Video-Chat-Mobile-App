@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:chatter/common/entities/entities.dart';
 import 'package:chatter/common/utils/utils.dart';
-import 'package:chatter/common/values/values.dart';
 
 class ChatAPI {
 
@@ -61,6 +60,7 @@ class ChatAPI {
     var response = await HttpUtil().post(
       'api/upload_photo',
       data: data,
+
     );
     return BaseResponseEntity.fromJson(response);
   }

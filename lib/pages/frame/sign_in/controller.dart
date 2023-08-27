@@ -4,7 +4,6 @@ import 'package:chatter/common/apis/apis.dart';
 import 'package:chatter/common/entities/entities.dart';
 import 'package:chatter/common/routes/routes.dart';
 import 'package:chatter/common/store/store.dart';
-import 'package:chatter/common/utils/utils.dart';
 import 'package:chatter/common/widgets/toast.dart';
 import 'package:chatter/pages/frame/sign_in/index.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +33,7 @@ class SignInController extends GetxController{
         String? displayName = user.displayName;
         String email = user.email;
         String id = user.id;
-        String photoUrl = user.photoUrl??"assets/icons/google.png";
+        String? photoUrl = user.photoUrl;
 
         LoginRequestEntity loginPanelListRequestEntity= LoginRequestEntity();
         loginPanelListRequestEntity.avatar = photoUrl;

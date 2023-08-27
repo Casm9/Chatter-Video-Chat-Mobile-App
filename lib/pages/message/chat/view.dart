@@ -10,6 +10,8 @@ class ChatPage extends GetView<ChatController> {
   const ChatPage({Key? key}) : super(key: key);
 
  AppBar _buildAppBar() {
+   String originalImageUrl = controller.state.to_avatar.value;
+   String updatedImageUrl = originalImageUrl.replaceFirst("http://localhost/", SERVER_API_URL);
    return AppBar(
      title: Obx((){
        return Container(
@@ -35,8 +37,11 @@ class ChatPage extends GetView<ChatController> {
              Container(
                width: 44.w,
                height: 44.h,
-               child: CachedNetworkImage(
-                 imageUrl: controller.state.to_avatar.value,
+               child: controller.state.to_avatar.value==null?
+               Image(image: AssetImage("assets/images/account_header.png"))
+                   :CachedNetworkImage(
+                 imageUrl: updatedImageUrl,
+                  httpHeaders: const {"Connection": "keep-alive"},
                  imageBuilder: (context,imageProvider) => Container(
                    decoration: BoxDecoration(
                      borderRadius: BorderRadius.circular(22.r),
@@ -44,9 +49,6 @@ class ChatPage extends GetView<ChatController> {
                        image: imageProvider
                      )
                    ),
-                 ),
-                 errorWidget: (context,url,error)=>Image(
-                     image: AssetImage('assets/images/account_header.png')
                  ),
                ),
              ),

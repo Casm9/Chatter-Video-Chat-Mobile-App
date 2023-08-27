@@ -24,6 +24,12 @@ class ProfileController extends GetxController{
     var userItem = Get.arguments;
     if(userItem != null){
       state.profile_detail.value = userItem;
+      if(state.profile_detail.value.name!=null){
+        nameController.text = state.profile_detail.value.name!;
+      }
+      if(state.profile_detail.value.description!=null){
+        descriptionController.text = state.profile_detail.value.description!;
+      }
     }
   }
 
@@ -58,6 +64,8 @@ class ProfileController extends GetxController{
     loginRequestEntity.online = userItem.online;
 
     var result = await UserAPI.UpdateProfile(params: loginRequestEntity);
+    print(result.code);
+    print(result.msg);
     if(result.code == 0){
       UserItem userItem = state.profile_detail.value;
       await UserStore.to.saveProfile(userItem);
@@ -93,6 +101,7 @@ class ProfileController extends GetxController{
 
   Future uploadFile() async{
     var result = await ChatAPI.upload_img(file: _photo);
+    print(result.data);
     if(result.code ==0){
       state.profile_detail.value.avatar = result.data;
       state.profile_detail.refresh();

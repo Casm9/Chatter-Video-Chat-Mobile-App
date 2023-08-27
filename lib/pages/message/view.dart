@@ -13,6 +13,8 @@ class MessagePage extends GetView<MessageController> {
   const MessagePage({Key? key}) : super(key: key);
 
   Widget _headBar(){
+    String originalImageUrl = controller.state.head_detail.value.avatar!;
+    String updatedImageUrl = originalImageUrl.replaceFirst("http://localhost/", SERVER_API_URL);
   return Center(
     child: Container(
       width: 320.w,
@@ -38,10 +40,9 @@ class MessagePage extends GetView<MessageController> {
                       )
                     ]
                   ),
-                  child: controller.state.head_detail.value.avatar==null?
-                  Image(image: AssetImage("assets/images/account_header.png")):
-                  CachedNetworkImage(
-                      imageUrl: controller.state.head_detail.value.avatar!,
+                  child: CachedNetworkImage(
+                      imageUrl: updatedImageUrl,
+                    httpHeaders: const {"Connection": "keep-alive"},
                       height: 44.h,
                       width: 44.w,
                       imageBuilder: (context,imageProvider) => Container(
@@ -53,11 +54,6 @@ class MessagePage extends GetView<MessageController> {
                           )
                         ),
                       ),
-                    errorWidget: (context,url,error) => Image(
-                        image: AssetImage(
-                          'assets/images/account_header.png'
-                        )
-                    ),
                   ),
                 ),
                 onTap: (){
@@ -215,6 +211,7 @@ class MessagePage extends GetView<MessageController> {
              Image(image: AssetImage("assets/images/account_header.png")):
              CachedNetworkImage(
                imageUrl: item.avatar!,
+               httpHeaders: const {"Connection": "keep-alive"},
                height: 44.h,
                width: 44.w,
                imageBuilder: (context,imageProvider) => Container(
@@ -226,11 +223,7 @@ class MessagePage extends GetView<MessageController> {
                      )
                  ),
                ),
-               errorWidget: (context,url,error) => Image(
-                   image: AssetImage(
-                       'assets/images/account_header.png'
-                   )
-               ),
+
              ),
 
 
@@ -279,17 +272,19 @@ class MessagePage extends GetView<MessageController> {
                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                      crossAxisAlignment: CrossAxisAlignment.end,
                      children: [
-                       Text(
-                           item.last_time==null ? "" : duTimeLineFormat(
-                               (item.last_time as Timestamp).toDate()),
-                         textAlign: TextAlign.end,
-                         maxLines: 1,
-                         overflow: TextOverflow.fade,
-                         style: TextStyle(
-                             fontFamily: "Avenir",
-                             fontWeight: FontWeight.normal,
-                             color: AppColors.primaryElementText,
-                             fontSize: 11.sp
+                       SizedBox(
+                         child: Text(
+                             item.last_time==null ? "" : duTimeLineFormat(
+                                 (item.last_time as Timestamp).toDate()),
+                           textAlign: TextAlign.end,
+                           maxLines: 1,
+                           overflow: TextOverflow.fade,
+                           style: TextStyle(
+                               fontFamily: "Avenir",
+                               fontWeight: FontWeight.normal,
+                               color: AppColors.primarySecondaryElementText,
+                               fontSize: 12.sp
+                           ),
                          ),
                        ),
                        item.msg_num == 0 ? Container() : Container(
@@ -354,6 +349,7 @@ class MessagePage extends GetView<MessageController> {
               Image(image: AssetImage("assets/images/account_header.png"))
               :CachedNetworkImage(
                 imageUrl: item.avatar!,
+                httpHeaders: const {"Connection": "keep-alive"},
                 height: 44.h,
                 width: 44.w,
                 imageBuilder: (context,imageProvider) => Container(
@@ -365,13 +361,7 @@ class MessagePage extends GetView<MessageController> {
                       )
                   ),
                 ),
-                errorWidget: (context,url,error) => Image(
-                    image: AssetImage(
-                        'assets/images/account_header.png'
-                    )
-                ),
               ),
-
 
             ),
             Container(
@@ -428,7 +418,7 @@ class MessagePage extends GetView<MessageController> {
                           style: TextStyle(
                               fontFamily: "Avenir",
                               fontWeight: FontWeight.normal,
-                              color: AppColors.primaryElementText,
+                              color: AppColors.primarySecondaryElementText,
                               fontSize: 11.sp
                           ),
                         ),

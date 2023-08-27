@@ -2,8 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:chatter/common/apis/apis.dart';
-import 'package:chatter/common/entities/chat.dart';
-import 'package:chatter/common/entities/chatcall.dart';
+import 'package:chatter/common/entities/entities.dart';
 import 'package:chatter/common/store/store.dart';
 import 'package:chatter/common/values/values.dart';
 import 'package:chatter/pages/message/voicecall/index.dart';
@@ -180,6 +179,9 @@ class VoiceCallController extends GetxController{
         )
 
     );
+    if (state.call_role == "audience") {
+      callTime();
+    }
 
     EasyLoading.dismiss();
   }
@@ -218,6 +220,58 @@ class VoiceCallController extends GetxController{
         toFirestore: (ChatCall chatCall, options) => chatCall.toFirestore()
     ).add(metaData);
 
+    String sendContent = "Call time ${state.callTimeNum.value} 【audio】";
+    saveMessage(sendContent);
+
+
+  }
+  Future<void> saveMessage(String sendContent) async {
+    if (state.doc_id.value.isEmpty) {
+      return;
+    }
+    final content = Msgcontent(
+        token: profile_token,
+        content: sendContent,
+        type: "text",
+        addtime: Timestamp.now());
+
+    await db
+        .collection("message")
+        .doc(state.doc_id.value)
+        .collection("msglist")
+        .withConverter(
+        fromFirestore: Msgcontent.fromFirestore,
+        toFirestore: (Msgcontent msgContent, options) =>
+            msgContent.toFirestore())
+        .add(content);
+
+    var messageRes = await db
+        .collection("message")
+        .doc(state.doc_id.value)
+        .withConverter(
+        fromFirestore: Msg.fromFirestore,
+        toFirestore: (Msg msg, options) =>
+            msg.toFirestore())
+        .get();
+
+    if(messageRes.data() != null){
+      var item = messageRes.data()!;
+      int to_msg_num = item.to_msg_num == null ? 0 : item.to_msg_num!;
+      int from_msg_num = item.from_msg_num == null ? 0 : item.from_msg_num!;
+
+      if(item.from_token == profile_token){
+        from_msg_num =  from_msg_num + 1;
+      }else {
+        to_msg_num = to_msg_num + 1;
+      }
+      await db.collection("message").doc(state.doc_id.value).update({
+        "to_msg_num": to_msg_num,
+        "from_msg_num": from_msg_num,
+        "last_msg" : sendContent,
+        "last_time" : Timestamp.now()
+      });
+
+    }
   }
 
   Future<void> _dispose() async {
@@ -226,6 +280,9 @@ class VoiceCallController extends GetxController{
     await addCallTime();
     await engine.release();
     await player.stop();
+    if (callTimer != null) {
+      callTimer.cancel();
+    }
   }
 
 
@@ -234,6 +291,8 @@ class VoiceCallController extends GetxController{
     _dispose();
     super.onClose();
   }
+
+
 
 
 
