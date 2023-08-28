@@ -16,7 +16,12 @@ import 'package:flutter/foundation.dart';
 
 
 
+void initAppCenter() async{
+  final ios = defaultTargetPlatform == TargetPlatform.iOS;
+  var app_secret = ios ? "689255af-40ae-4123-94c9-59e36f66e6b9" : "7d21a41e-e983-4a6e-8b58-032a7796e5b8";
 
+  await AppCenter.start(app_secret, [AppCenterAnalytics.id, AppCenterCrashes.id]);
+}
 
 
 Future<void> main() async{
@@ -45,12 +50,7 @@ Future firebaseChatInit() async{
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  void initAppCenter() async{
-    final ios = defaultTargetPlatform == TargetPlatform.iOS;
-    var app_secret = ios ? "123cfac9-123b-123a-123f-123273416a48" : "5f536a48-e01c-42b2-863d-21aaa3a38855";
 
-    await AppCenter.start(app_secret, [AppCenterAnalytics.id, AppCenterCrashes.id]);
-  }
 
 
 
