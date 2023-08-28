@@ -23,4 +23,3 @@ also for sending notification.
 it provides very stable API for audio and video call.
 
 - Laravel Framework: it has been used for basic backend service where you can video basic user data.
-

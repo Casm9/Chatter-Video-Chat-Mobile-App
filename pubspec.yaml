@@ -114,6 +114,12 @@ dependencies:
 
   flutter_local_notifications: ^13.0.0
 
+  appcenter: ^0.2.1
+
+  appcenter_analytics: ^0.2.1
+
+  appcenter_crashes: ^0.2.1
+
 
 dev_dependencies:
   flutter_test:
