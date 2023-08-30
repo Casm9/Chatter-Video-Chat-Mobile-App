@@ -418,7 +418,7 @@ class MessagePage extends GetView<MessageController> {
                           style: TextStyle(
                               fontFamily: "Avenir",
                               fontWeight: FontWeight.normal,
-                              color: AppColors.primarySecondaryElementText,
+                              color: AppColors.thirdElementText,
                               fontSize: 11.sp
                           ),
                         ),

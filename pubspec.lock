@@ -17,30 +17,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.2.2"
-  appcenter:
-    dependency: "direct main"
-    description:
-      name: appcenter
-      sha256: ca4808d1f04f93da49d5035623dca07d6798e1303e159f16f87a2fab4320222f
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.2.1"
-  appcenter_analytics:
-    dependency: "direct main"
-    description:
-      name: appcenter_analytics
-      sha256: "8973f3455bacdca4cc934898f136c463a9fb672427f0cfce5e43592f082f769f"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.2.1"
-  appcenter_crashes:
-    dependency: "direct main"
-    description:
-      name: appcenter_crashes
-      sha256: df5a1f7e8c5942f65ca17523e3ac4a8e71042e77b043b457b058419c08f10b23
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.2.1"
   args:
     dependency: transitive
     description:

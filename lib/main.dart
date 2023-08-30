@@ -9,19 +9,9 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:appcenter/appcenter.dart';
-import 'package:appcenter_analytics/appcenter_analytics.dart';
-import 'package:appcenter_crashes/appcenter_crashes.dart';
-import 'package:flutter/foundation.dart';
 
 
 
-void initAppCenter() async{
-  final ios = defaultTargetPlatform == TargetPlatform.iOS;
-  var app_secret = ios ? "689255af-40ae-4123-94c9-59e36f66e6b9" : "7d21a41e-e983-4a6e-8b58-032a7796e5b8";
-
-  await AppCenter.start(app_secret, [AppCenterAnalytics.id, AppCenterCrashes.id]);
-}
 
 
 Future<void> main() async{
