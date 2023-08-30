@@ -2,6 +2,16 @@
 
 Video Chat App
 
+# App Pictures
+
+Login Page                                       Profile Page
+![Chatter](https://imgur.com/gB9eKpX.png)        ![Chatter](https://imgur.com/cnsuiBB.png)
+                                          
+
+
+
+
+
 # App Functional Features
 
 - Third party and phone number login (Third party login would involve Google, Facebook and Apple login)
